@@ -128,9 +128,27 @@ function configListeners() {
 
 }
 
+function registerServiceWorker() {
+    if("serviceWorker" in navigator) {
+        //window.addEventListener("load", () => {
+            this.navigator.serviceWorker.register('./sw.js')
+            .then( reg => {
+                console.log("The service worker was successfully registered", reg)
+            })
+            .catch( err => {
+                console.error("error registering service worker", err)
+            })
+        //})
+    }
+    else {
+        console.error("serviceWorker not available")
+    }
+}
+
 function start() {
     console.log(document.querySelector('title').textContent)
 
+    registerServiceWorker()
     configListeners()
     renderList()
 }
@@ -138,4 +156,4 @@ function start() {
 /*                      EJECUCIÓN                         */
 /* ------------------------------------------------------ */
 
-window.onload = start()
+window.onload = start
