@@ -9,9 +9,6 @@ let productList = [
     { name: 'Milk', quantity: 5, price: 78.90 },
 ]
 
-let createList = true
-
-let ul
 
 /* ------------------------------------------------------ */
 /*                  BOTÓN DE DIALOGO                      */
@@ -51,83 +48,40 @@ function changeValue(type, index, el) {
 
 }
 
-function renderList() {
+async function renderList() {
 
-    if (createList) {
-        ul = document.createElement('ul')
+    let data = await fetch('template-list.hbs')
+    let template = await data.text()
 
-        ul.classList.add('demo-list-icon', 'mdl-list', 'w-100')
-    }
+    var templates = Handlebars.compile(template)
+    $('#lista').html(templates({ productList : productList }))
 
-    ul.innerHTML = ""
-    productList.forEach((prod, index) => {
-
-        // console.log(index, prod)
-        ul.innerHTML +=
-            `
-            <li class="mdl-list__item">
-                <!-- Icon -->
-                <span class="mdl-list__item-primary-content w-10">
-                    <i class="material-icons mdl-list__item-icon">lunch_dining</i>
-                </span>
-                <!-- Name -->
-                <span class="mdl-list__item-primary-content w-30"> ${prod.name} </span>
-                <!-- Quantity -->
-                <span class="mdl-list__item-primary-content w-20">
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input onchange="changeValue('quantity', ${index}, this)" value="${prod.quantity}" class="mdl-textfield__input" type="text" id="sample-quantity-${index}" />
-                        <label class="mdl-textfield__label" for="sample-quantity-${index}">Quantity</label>
-                    </div>
-                </span>
-                <!-- Price -->
-                <span class="mdl-list__item-primary-content w-20 ml-item">
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input onchange="changeValue('price', ${index}, this)" value="${prod.price}"class="mdl-textfield__input" type="text" id="sample-price-${index}" />
-                        <label class="mdl-textfield__label" for="sample-price-${index}">Price ($)</label>
-                    </div>
-                </span>
-                <!-- Delete -->
-                <span class="mdl-list__item-primary-content w-20 ml-item">
-                    <!-- Accent-colored raised button with ripple -->
-                    <button onclick="deleteProduct(${index})" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                        <i class="material-icons">remove_shopping_cart</i>
-                    </button>
-                </span>
-            </li>
-            `
-    })
-    if (createList) {
-        document.getElementById('lista').appendChild(ul)
-
-    }
-    else {
-        componentHandler.upgradeElements(ul)
-    }
-
-    createList = false
+    let ul = $("#list-container")
+    componentHandler.upgradeElements(ul)
+    
 }
 
 function configListeners() {
 
-    document.getElementById("btn-product-input").addEventListener("click", () => {
+    $("#btn-product-input").click(() => {
         console.log("btn-product-input")
 
-        let input = document.getElementById("enter-product")
-        let product = input.value
+        let input = $("#enter-product")
+        let product = input.val()
         console.log(product)
 
         if (product) {
             productList.push({ name: product, quantity: 1, price: 0 })
             renderList()
-            input.value = null
+            input.val(null)
         }
     })
 
-    document.getElementById("btn-delete-product").addEventListener("click", () => {
+    $("#btn-delete-product").click(() => {
         console.log("btn-delete-product")
 
         if (productList.length) {
-            var dialog = document.querySelector("dialog");
+            var dialog = $("dialog")[0];
             dialog.showModal();
         }
         /* if (confirm("Do you want to delete all products?")) {
@@ -139,18 +93,18 @@ function configListeners() {
 }
 
 function initDialog() {
-    var dialog = document.querySelector("dialog");
+    var dialog = $("dialog")[0];
     if (!dialog.showModal) {
         dialogPolyfill.registerDialog(dialog);
     }
 
-    dialog.querySelector(".agree").addEventListener("click", function () {
+    $("dialog .agree").click(() => {
         productList = []
         renderList()
         dialog.close();
     });
 
-    dialog.querySelector(".close").addEventListener("click", function () {
+    $("dialog .close").click(() => {
         dialog.close();
     });
 }
@@ -184,4 +138,5 @@ function start() {
 /*                      EJECUCIÓN                         */
 /* ------------------------------------------------------ */
 
-window.onload = start
+/* window.onload = start */
+$(document).ready(start)

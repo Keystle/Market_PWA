@@ -1,0 +1,36 @@
+<ul id="list-container" class="demo-list-icon mdl-list w-100">
+    {{#productList}}
+    <li class="mdl-list__item">
+        <!-- Icon -->
+        <span class="mdl-list__item-primary-content w-10">
+            <i class="material-icons mdl-list__item-icon">lunch_dining</i>
+        </span>
+        <!-- Name -->
+        <span class="mdl-list__item-primary-content w-30"> {{name}} </span>
+        <!-- Quantity -->
+        <span class="mdl-list__item-primary-content w-20">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input onchange="changeValue('quantity', {{@index}}, this)" value="{{quantity}}"
+                    class="mdl-textfield__input" type="text" id="sample-quantity-{{@index}}" />
+                <label class="mdl-textfield__label" for="sample-quantity-{{@index}}">Quantity</label>
+            </div>
+        </span>
+        <!-- Price -->
+        <span class="mdl-list__item-primary-content w-20 ml-item">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input onchange="changeValue('price', {{@index}}, this)" value="{{price}}"
+                    class="mdl-textfield__input" type="text" id="sample-price-{{@index}}" />
+                <label class="mdl-textfield__label" for="sample-price-{{@index}}">Price ($)</label>
+            </div>
+        </span>
+        <!-- Delete -->
+        <span class="mdl-list__item-primary-content w-20 ml-item">
+            <!-- Accent-colored raised button with ripple -->
+            <button onclick="deleteProduct({{@index}})"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                <i class="material-icons">remove_shopping_cart</i>
+            </button>
+        </span>
+    </li>
+    {{/productList}}
+</ul>
