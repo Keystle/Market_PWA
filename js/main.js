@@ -14,6 +14,12 @@ let createList = true
 let ul
 
 /* ------------------------------------------------------ */
+/*                  BOTÓN DE DIALOGO                      */
+/* ------------------------------------------------------ */
+
+
+
+/* ------------------------------------------------------ */
 /*                  FUNCIONES GLOBALES                    */
 /* ------------------------------------------------------ */
 
@@ -49,14 +55,14 @@ function renderList() {
 
     if (createList) {
         ul = document.createElement('ul')
-        
+
         ul.classList.add('demo-list-icon', 'mdl-list', 'w-100')
     }
 
     ul.innerHTML = ""
     productList.forEach((prod, index) => {
 
-        console.log(index, prod)
+        // console.log(index, prod)
         ul.innerHTML +=
             `
             <li class="mdl-list__item">
@@ -120,23 +126,44 @@ function configListeners() {
     document.getElementById("btn-delete-product").addEventListener("click", () => {
         console.log("btn-delete-product")
 
-        if (confirm("Do you want to delete all products?")) {
+        if (productList.length) {
+            var dialog = document.querySelector("dialog");
+            dialog.showModal();
+        }
+        /* if (confirm("Do you want to delete all products?")) {
             productList = []
             renderList()
-        }
+        } */
     })
 
 }
 
+function initDialog() {
+    var dialog = document.querySelector("dialog");
+    if (!dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+
+    dialog.querySelector(".agree").addEventListener("click", function () {
+        productList = []
+        renderList()
+        dialog.close();
+    });
+
+    dialog.querySelector(".close").addEventListener("click", function () {
+        dialog.close();
+    });
+}
+
 function registerServiceWorker() {
-    if("serviceWorker" in navigator) {
+    if ("serviceWorker" in navigator) {
         //window.addEventListener("load", () => {
-            this.navigator.serviceWorker.register('./sw.js')
-            .then( reg => {
-                console.log("The service worker was successfully registered", reg)
+        this.navigator.serviceWorker.register('./sw.js')
+            .then(reg => {
+                // console.log("The service worker was successfully registered", reg)
             })
-            .catch( err => {
-                console.error("error registering service worker", err)
+            .catch(err => {
+                // console.error("error registering service worker", err)
             })
         //})
     }
@@ -146,8 +173,9 @@ function registerServiceWorker() {
 }
 
 function start() {
-    console.log(document.querySelector('title').textContent)
+    /* console.log(document.querySelector('title').textContent) */
 
+    initDialog()
     registerServiceWorker()
     configListeners()
     renderList()

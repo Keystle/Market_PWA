@@ -23,3 +23,13 @@
     justify-content: space-around;
     align-items: center;
 }
+img {
+    width: 100%;
+    
+}
+
+.mdl-button {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}

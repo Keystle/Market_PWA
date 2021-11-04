@@ -7,5 +7,10 @@ self.addEventListener('activate', e => {
 })
 
 self.addEventListener('fetch', e => {
-    console.log('sw fetch')
+    let {url, method} = e.request 
+    
+    console.log(method, url)
+
+    let answer = fetch(e.request)
+    e.respondWith(answer)
 })
